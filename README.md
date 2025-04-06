@@ -1,302 +1,159 @@
-## Laboratory work 5
-#Настройка окружения 
-```bash
-student@LabPythonVM:~$ export GITHUB_USERNAME=MaRLoR-64
-student@LabPythonVM:~$ alias gsed=sed # for *-nix system
-student@LabPythonVM:~$ cd ${GITHUB_USERNAME}/workspace
-student@LabPythonVM:~/MaRLoR-64/workspace$ pushd .
-~/MaRLoR-64/workspace ~/MaRLoR-64/workspace
-student@LabPythonVM:~/MaRLoR-64/workspace$ source scripts/activate
-student@LabPythonVM:~/MaRLoR-64/workspace$ git clone https://github.com/${GITHUB_USERNAME}/lab04 projects/lab06
+## Laboratory work VI
+#Подготовка рабойчей директории
+```sh 
+student@LabPythonVM:~/MaRLoR-64/workspace$ git clone https://github.com/${GITHUB_USERNAME}/lab05 projects/lab06
 Клонирование в «projects/lab06»...
-remote: Enumerating objects: 33, done.
-remote: Counting objects: 100% (33/33), done.
-remote: Compressing objects: 100% (24/24), done.
-remote: Total 33 (delta 8), reused 26 (delta 5), pack-reused 0 (from 0)
-Получение объектов: 100% (33/33), 11.89 КиБ | 296.00 КиБ/с, готово.
-Определение изменений: 100% (8/8), готово.
+remote: Enumerating objects: 47, done.
+remote: Counting objects: 100% (47/47), done.
+remote: Compressing objects: 100% (28/28), done.
+remote: Total 47 (delta 14), reused 43 (delta 13), pack-reused 0 (from 0)
+Получение объектов: 100% (47/47), 18.13 КиБ | 269.00 КиБ/с, готово.
+Определение изменений: 100% (14/14), готово.
 student@LabPythonVM:~/MaRLoR-64/workspace$ cd projects/lab06
 student@LabPythonVM:~/MaRLoR-64/workspace/projects/lab06$ git remote remove origin
 student@LabPythonVM:~/MaRLoR-64/workspace/projects/lab06$ git remote add origin https://github.com/${GITHUB_USERNAME}/lab06
-student@LabPythonVM:~/MaRLoR-64/workspace/projects/lab06$ mkdir third-party
-student@LabPythonVM:~/MaRLoR-64/workspace/projects/lab06$ git submodule add https://github.com/google/googletest third-party/gtest
-Клонирование в «/home/student/MaRLoR-64/workspace/projects/lab06/third-party/gtest»...
-remote: Enumerating objects: 27977, done.
-remote: Counting objects: 100% (224/224), done.
-remote: Compressing objects: 100% (142/142), done.
-remote: Total 27977 (delta 143), reused 82 (delta 82), pack-reused 27753 (from 3)
-Получение объектов: 100% (27977/27977), 13.46 МиБ | 260.00 КиБ/с, готово.
-Определение изменений: 100% (20733/20733), готово.
-student@LabPythonVM:~/MaRLoR-64/workspace/projects/lab06$ cd third-party/gtest && git checkout release-1.8.1 && cd ../..
-Примечание: переключение на «release-1.8.1».
-
-Вы сейчас в состоянии «отсоединённого указателя HEAD». Можете осмотреться,
-внести экспериментальные изменения и зафиксировать их, также можете
-отменить любые коммиты, созданные в этом состоянии, не затрагивая другие
-ветки, переключившись обратно на любую ветку.
-
-Если хотите создать новую ветку для сохранения созданных коммитов, можете
-сделать это (сейчас или позже), используя команду switch с параметром -c.
-Например:
-git switch -c <новая-ветка>
-
-Или отмените эту операцию с помощью:
-
-  git switch -
-
-Отключите этот совет, установив переменную конфигурации
-advice.detachedHead в значение false
-
-HEAD сейчас на 2fe3bd99 Merge pull request #1433 from dsacre/fix-clang-warnings
-student@LabPythonVM:~/MaRLoR-64/workspace/projects/lab06$ git add third-party/gtest
-student@LabPythonVM:~/MaRLoR-64/workspace/projects/lab06$ git commit -m"added gtest framework"
-[master 2981c0d] added gtest framework
- 2 files changed, 4 insertions(+)
- create mode 100644 .gitmodules
- create mode 160000 third-party/gtest
 ```
-#Добавление Google Test как submodule
+#Настройка Cmake
 ```sh
-student@LabPythonVM:~/MaRLoR-64/workspace/projects/lab06$ gsed -i '/option(BUILD_EXAMPLES "Build examples" OFF)/a\
+student@LabPythonVM:~/MaRLoR-64/workspace/projects/lab06$ gsed -i '/project(print)/a\
+set(PRINT_VERSION_STRING "v\${PRINT_VERSION}")
 ' CMakeLists.txt
+student@LabPythonVM:~/MaRLoR-64/workspace/projects/lab06$ gsed -i '/project(print)/a\
+set(PRINT_VERSION_PATCH 0)
+' CMakeLists.txt
+student@LabPythonVM:~/MaRLoR-64/workspace/projects/lab06$ gsed -i '/project(print)/a\
+set(PRINT_VERSION_MINOR 1)
+' CMakeLists.txt
+student@LabPythonVM:~/MaRLoR-64/workspace/projects/lab06$ gsed -i '/project(print)/a\
+set(PRINT_VERSION_MAJOR 0)
+' CMakeLists.txt
+student@LabPythonVM:~/MaRLoR-64/workspace/projects/lab06$ git diff
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 89739e7..66530c1 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -7,6 +7,10 @@ option(BUILD_EXAMPLES "Build examples" OFF)
+ option(BUILD_TESTS "Build tests" OFF)
+
+ project(print)
++set(PRINT_VERSION_MAJOR 0)
++set(PRINT_VERSION_MINOR 1)
++set(PRINT_VERSION_PATCH 0)
++set(PRINT_VERSION_STRING "v${PRINT_VERSION}")
+ 
+ add_library(print STATIC ${CMAKE_CURRENT_SOURCE_DIR}/sources/print.cpp)
+ 
+student@LabPythonVM:~/MaRLoR-64/workspace/projects/lab06$ touch DESCRIPTION && edit DESCRIPTION
+student@LabPythonVM:~/MaRLoR-64/workspace/projects/lab06$ touch ChangeLog.md
+student@LabPythonVM:~/MaRLoR-64/workspace/projects/lab06$ export DATE="`LANG=en_US date +'%a %b %d %Y'`"
+student@LabPythonVM:~/MaRLoR-64/workspace/projects/lab06$ cat > ChangeLog.md <<EOF
+> ${DATE} ${GITHUB_USERNAME} <${GITHUB_EMAIL}> 0.1.0.0
+- Initial RPM release
+```
+#Настройка Сpack
+```sh
+student@LabPythonVM:~/MaRLoR-64/workspace/projects/lab06$ cat >> CPackConfig.cmake <<EOF
+> set(CPACK_PACKAGE_CONTACT ${GITHUB_EMAIL})
+set(CPACK_PACKAGE_VERSION_MAJOR \${PRINT_VERSION_MAJOR})
+set(CPACK_PACKAGE_VERSION_MINOR \${PRINT_VERSION_MINOR})
+set(CPACK_PACKAGE_VERSION_PATCH \${PRINT_VERSION_PATCH})
+set(CPACK_PACKAGE_VERSION_TWEAK \${PRINT_VERSION_TWEAK})
+set(CPACK_PACKAGE_VERSION \${PRINT_VERSION})
+set(CPACK_PACKAGE_DESCRIPTION_FILE \${CMAKE_CURRENT_SOURCE_DIR}/DESCRIPTION)
+set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "static C++ library for printing")
+> EOF
+student@LabPythonVM:~/MaRLoR-64/workspace/projects/lab06$ cat >> CPackConfig.cmake <<EOF
+> set(CPACK_RESOURCE_FILE_LICENSE \${CMAKE_CURRENT_SOURCE_DIR}/LICENSE)
+set(CPACK_RESOURCE_FILE_README \${CMAKE_CURRENT_SOURCE_DIR}/README.md)
+> EOF
+student@LabPythonVM:~/MaRLoR-64/workspace/projects/lab06$ cat >> CPackConfig.cmake <<EOF
+> set(CPACK_RPM_PACKAGE_NAME "print-devel")
+set(CPACK_RPM_PACKAGE_LICENSE "MIT")
+set(CPACK_RPM_PACKAGE_GROUP "print")
+set(CPACK_RPM_CHANGELOG_FILE \${CMAKE_CURRENT_SOURCE_DIR}/ChangeLog.md)
+set(CPACK_RPM_PACKAGE_RELEASE 1)
+> EOF
+student@LabPythonVM:~/MaRLoR-64/workspace/projects/lab06$ cat >> CPackConfig.cmake <<EOF
+> set(CPACK_DEBIAN_PACKAGE_NAME "libprint-dev")
+set(CPACK_DEBIAN_PACKAGE_PREDEPENDS "cmake >= 3.0")
+set(CPACK_DEBIAN_PACKAGE_RELEASE 1)
+> EOF
+student@LabPythonVM:~/MaRLoR-64/workspace/projects/lab06$ cat >> CPackConfig.cmake <<EOF
+> include(CPack)
+> EOF
 student@LabPythonVM:~/MaRLoR-64/workspace/projects/lab06$ cat >> CMakeLists.txt <<EOF
-> if(BUILD_TESTS)
-  enable_testing()
-  add_subdirectory(third-party/gtest)
-  file(GLOB \${PROJECT_NAME}_TEST_SOURCES tests/*.cpp)
-  add_executable(check \${\${PROJECT_NAME}_TEST_SOURCES})
-  target_link_libraries(check \${PROJECT_NAME} gtest_main)
-  add_test(NAME check COMMAND check)
-endif()
+> include(CPackConfig.cmake)
 > EOF
-student@LabPythonVM:~/MaRLoR-64/workspace/projects/lab06$ mkdir tests
-student@LabPythonVM:~/MaRLoR-64/workspace/projects/lab06$ cat > tests/test1.cpp <<EOF
-> #include <print.hpp>
-
-#include <gtest/gtest.h>
-
-TEST(Print, InFileStream)
-{
-  std::string filepath = "file.txt";
-  std::string text = "hello";
-  std::ofstream out{filepath};
-
-  print(text, out);
-  out.close();
-
-  std::string result;
-  std::ifstream in{filepath};
-  in >> result;
-
-  EXPECT_EQ(result, text);
-> EOF
-student@LabPythonVM:~/MaRLoR-64/workspace/projects/lab06$ cmake -H. -B_build -DBUILD_TESTS=ON
--- The C compiler identification is GNU 12.2.0
--- The CXX compiler identification is GNU 12.2.0
--- Detecting C compiler ABI info
--- Detecting C compiler ABI info - done
--- Check for working C compiler: /usr/bin/cc - skipped
--- Detecting C compile features
--- Detecting C compile features - done
--- Detecting CXX compiler ABI info
--- Detecting CXX compiler ABI info - done
--- Check for working CXX compiler: /usr/bin/c++ - skipped
--- Detecting CXX compile features
--- Detecting CXX compile features - done
-CMake Deprecation Warning at third-party/gtest/CMakeLists.txt:1 (cmake_minimum_required):
-  Compatibility with CMake < 2.8.12 will be removed from a future version of
-  CMake.
-
-  Update the VERSION argument <min> value or use a ...<max> suffix to tell
-  CMake that the project does not need compatibility with older versions.
-
-
-CMake Deprecation Warning at third-party/gtest/googlemock/CMakeLists.txt:42 (cmake_minimum_required):
-  Compatibility with CMake < 2.8.12 will be removed from a future version of
-  CMake.
-
-  Update the VERSION argument <min> value or use a ...<max> suffix to tell
-  CMake that the project does not need compatibility with older versions.
-
-
-CMake Deprecation Warning at third-party/gtest/googletest/CMakeLists.txt:49 (cmake_minimum_required):
-  Compatibility with CMake < 2.8.12 will be removed from a future version of
-  CMake.
-
-  Update the VERSION argument <min> value or use a ...<max> suffix to tell
-  CMake that the project does not need compatibility with older versions.
-
-
--- Found PythonInterp: /usr/bin/python3 (found version "3.11.2") 
--- Performing Test CMAKE_HAVE_LIBC_PTHREAD
--- Performing Test CMAKE_HAVE_LIBC_PTHREAD - Success
--- Found Threads: TRUE  
+student@LabPythonVM:~/MaRLoR-64/workspace/projects/lab06$ gsed -i 's/lab05/lab06/g' README.md
+student@LabPythonVM:~/MaRLoR-64/workspace/projects/lab06$ git add .
+student@LabPythonVM:~/MaRLoR-64/workspace/projects/lab06$ git commit -m"added cpack config"
+[master c4e329a] added cpack config
+ 5 files changed, 67 insertions(+), 40 deletions(-)
+ create mode 100644 CPackConfig.cmake
+ create mode 100644 ChangeLog.md
+ create mode 100644 DESCRIPTION
+#Сборка пакета 
+```sh
+student@LabPythonVM:~/MaRLoR-64/workspace/projects/lab06$ git tag v0.1.0.0
+student@LabPythonVM:~/MaRLoR-64/workspace/projects/lab06$ git push origin master --tags
+Username for 'https://github.com': MaRLoR-64
+Password for 'https://MaRLoR-64@github.com': 
+Перечисление объектов: 53, готово.
+Подсчет объектов: 100% (53/53), готово.
+При сжатии изменений используется до 4 потоков
+Сжатие объектов: 100% (33/33), готово.
+Запись объектов: 100% (53/53), 19.17 КиБ | 19.17 МиБ/с, готово.
+Всего 53 (изменений 18), повторно использовано 43 (изменений 14), повторно использовано пакетов 0
+remote: Resolving deltas: 100% (18/18), done.
+To https://github.com/MaRLoR-64/lab06
+ * [new branch]      master -> master
+ * [new tag]         v0.1.0.0 -> v0.1.0.0
+student@LabPythonVM:~/MaRLoR-64/workspace/projects/lab06$ cmake -H. -B_build
 -- Configuring done
 -- Generating done
 -- Build files have been written to: /home/student/MaRLoR-64/workspace/projects/lab06/_build
 student@LabPythonVM:~/MaRLoR-64/workspace/projects/lab06$ cmake --build _build
-[ 16%] Built target print
-[ 33%] Built target gtest
-[ 50%] Built target gtest_main
-[ 58%] Building CXX object CMakeFiles/check.dir/tests/test1.cpp.o
-[ 66%] Linking CXX executable check
-[ 66%] Built target check
-[ 75%] Building CXX object third-party/gtest/googlemock/CMakeFiles/gmock.dir/src/gmock-all.cc.o
-[ 83%] Linking CXX static library libgmock.a
-[ 83%] Built target gmock
-[ 91%] Building CXX object third-party/gtest/googlemock/CMakeFiles/gmock_main.dir/src/gmock_main.cc.o
-[100%] Linking CXX static library libgmock_main.a
-[100%] Built target gmock_main
+[ 50%] Building CXX object CMakeFiles/print.dir/sources/print.cpp.o
+[100%] Linking CXX static library libprint.a
+[100%] Built target print
+student@LabPythonVM:~/MaRLoR-64/workspace/projects/lab06$ cd _build
+student@LabPythonVM:~/MaRLoR-64/workspace/projects/lab06/_build$ cpack -G "TGZ"
+CPack: Create package using TGZ
+CPack: Install projects
+CPack: - Run preinstall target for: print
+CPack: - Install project: print []
+CPack: Create package
+CPack: - package: /home/student/MaRLoR-64/workspace/projects/lab06/_build/print-0.1.0-Linux.tar.gz generated.
+student@LabPythonVM:~/MaRLoR-64/workspace/projects/lab06/_build$ cd ..
+student@LabPythonVM:~/MaRLoR-64/workspace/projects/lab06$ cmake -H. -B_build -DCPACK_GENERATOR="TGZ"
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/student/MaRLoR-64/workspace/projects/lab06/_build
+student@LabPythonVM:~/MaRLoR-64/workspace/projects/lab06$ cmake --build _build --target package
+100%] Built target print
+Run CPack packaging tool...
+CPack: Create package using TGZ
+CPack: Install projects
+CPack: - Run preinstall target for: print
+CPack: - Install project: print []
+CPack: Create package
+CPack: - package: /home/student/MaRLoR-64/workspace/projects/lab06/_build/print-0.1.0-Linux.tar.gz generated.
+student@LabPythonVM:~/MaRLoR-64/workspace/projects/lab06$ mkdir artifacts
+student@LabPythonVM:~/MaRLoR-64/workspace/projects/lab06$ mv _build/*.tar.gz artifacts
+student@LabPythonVM:~/MaRLoR-64/workspace/projects/lab06$ tree artifacts
+artifacts
+└── print-0.1.0-Linux.tar.gz
 
+1 directory, 1 file
+student@LabPythonVM:~/MaRLoR-64/workspace/projects/lab06$ popd
+~/MaRLoR-64/workspace
+student@LabPythonVM:~/MaRLoR-64/workspace$ export LAB_NUMBER=06
+student@LabPythonVM:~/MaRLoR-64/workspace$ git clone https://github.com/tp-labs/lab${LAB_NUMBER} tasks/lab${LAB_NUMBER}
+Клонирование в «tasks/lab06»...
+remote: Enumerating objects: 117, done.
+remote: Counting objects: 100% (37/37), done.
+remote: Compressing objects: 100% (4/4), done.
+remote: Total 117 (delta 35), reused 33 (delta 33), pack-reused 80 (from 1)
+Получение объектов: 100% (117/117), 1.33 МиБ | 70.00 КиБ/с, готово.
+Определение изменений: 100% (36/36), готово.
 ```
-#Запуск проекта
-```sh
-student@LabPythonVM:~/MaRLoR-64/workspace/projects/lab06$ cmake --build _build --target test
-Running tests...
-Test project /home/student/MaRLoR-64/workspace/projects/lab06/_build
-    Start 1: check
-1/1 Test #1: check ............................   Passed    0.00 sec
-
-100% tests passed, 0 tests failed out of 1
-
-Total Test time (real) =   0.01 sec
-student@LabPythonVM:~/MaRLoR-64/workspace/projects/lab06$ _build/check
-Running main() from /home/student/MaRLoR-64/workspace/projects/lab06/third-party/gtest/googletest/src/gtest_main.cc
-[==========] Running 1 test from 1 test case.
-[----------] Global test environment set-up.
-[----------] 1 test from Print
-[ RUN      ] Print.InFileStream
-[       OK ] Print.InFileStream (0 ms)
-[----------] 1 test from Print (0 ms total)
-
-[----------] Global test environment tear-down
-[==========] 1 test from 1 test case ran. (0 ms total)
-[  PASSED  ] 1 test.
-student@LabPythonVM:~/MaRLoR-64/workspace/projects/lab06$ cmake --build _build --target test -- ARGS=--verbose
-Running tests...
-UpdateCTestConfiguration  from :/home/student/MaRLoR-64/workspace/projects/lab06/_build/DartConfiguration.tcl
-UpdateCTestConfiguration  from :/home/student/MaRLoR-64/workspace/projects/lab06/_build/DartConfiguration.tcl
-Test project /home/student/MaRLoR-64/workspace/projects/lab06/_build
-Constructing a list of tests
-Done constructing a list of tests
-Updating test list for fixtures
-Added 0 tests to meet fixture requirements
-Checking test dependency graph...
-Checking test dependency graph end
-test 1
-    Start 1: check
-
-1: Test command: /home/student/MaRLoR-64/workspace/projects/lab06/_build/check
-1: Working Directory: /home/student/MaRLoR-64/workspace/projects/lab06/_build
-1: Test timeout computed to be: 10000000
-
-1: Running main() from /home/student/MaRLoR-64/workspace/projects/lab06/third-party/gtest/googletest/src/gtest_main.cc
-1: [==========] Running 1 test from 1 test case.
-1: [----------] Global test environment set-up.
-1: [----------] 1 test from Print
-1: [ RUN      ] Print.InFileStream
-1: [       OK ] Print.InFileStream (0 ms)
-1: [----------] 1 test from Print (0 ms total)
-1: 
-1: [----------] Global test environment tear-down
-1: [==========] 1 test from 1 test case ran. (0 ms total)
-1: [  PASSED  ] 1 test.
-1/1 Test #1: check ............................   Passed    0.00 sec
-
-100% tests passed, 0 tests failed out of 1
-
-Total Test time (real) =   0.00 sec
-student@LabPythonVM:~/MaRLoR-64/workspace/projects/lab06$ gsed -i 's/lab04/lab06/g' README.md
-student@LabPythonVM:~/MaRLoR-64/workspace/projects/lab06$ gsed -i 's/\(DCMAKE_INSTALL_PREFIX=_install\)/\1 -DBUILD_TESTS=ON/' .travis.yml
-student@LabPythonVM:~/MaRLoR-64/workspace/projects/lab06$ gsed -i '/cmake --build _build --target install/a\
-- cmake --build _build --target test -- ARGS=--verbose
-' .travis.yml
-student@LabPythonVM:~/MaRLoR-64/workspace/projects/lab06$ git add tests
-student@LabPythonVM:~/MaRLoR-64/workspace/projects/lab06$ git add -p
-diff --git a/.travis.yml b/.travis.yml
-index 876ee12..f89849d 100644
---- a/.travis.yml
-+++ b/.travis.yml
-@@ -1,8 +1,9 @@
- language: cpp
- script:
--- cmake -H. -B_build -DCMAKE_INSTALL_PREFIX=_install
-+- cmake -H. -B_build -DCMAKE_INSTALL_PREFIX=_install -DBUILD_TESTS=ON
- - cmake --build _build
-- cmake --build _build --target install
-+- cmake --build _build --target test -- ARGS=--verbose
- addons:
-   apt:
-     sources:
-(1/1) Индексировать этот блок [y,n,q,a,d,s,e,?]? y 
-
-diff --git a/CMakeLists.txt b/CMakeLists.txt
-index 96a361e..89739e7 100644
---- a/CMakeLists.txt
-+++ b/CMakeLists.txt
-@@ -4,6 +4,7 @@ set(CMAKE_CXX_STANDARD 11)
- set(CMAKE_CXX_STANDARD_REQUIRED ON)
- 
- option(BUILD_EXAMPLES "Build examples" OFF)
-+option(BUILD_TESTS "Build tests" OFF)
- 
- project(print)
- 
-(1/2) Индексировать этот блок [y,n,q,a,d,j,J,g,/,e,?]? y
-@@ -34,3 +35,11 @@ install(TARGETS print
- 
- install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/include/ DESTINATION include)
- install(EXPORT print-config DESTINATION cmake)
-+if(BUILD_TESTS)
-+  enable_testing()
-+  add_subdirectory(third-party/gtest)
-+  file(GLOB ${PROJECT_NAME}_TEST_SOURCES tests/*.cpp)
-+  add_executable(check ${${PROJECT_NAME}_TEST_SOURCES})
-+  target_link_libraries(check ${PROJECT_NAME} gtest_main)
-+  add_test(NAME check COMMAND check)
-+endif()
-(2/2) Индексировать этот блок [y,n,q,a,d,K,g,/,e,?]? y
-diff --git a/README.md b/README.md
-index d5a3349..cb775a0 100644
---- a/README.md
-+++ b/README.md
-@@ -20,10 +20,10 @@ gem install travis
- ```
- #Клонирование и настройка репозитория
- ```sh
--git clone https://github.com/${GITHUB_USERNAME}/lab03 projects/lab04
--cd projects/lab04
-+git clone https://github.com/${GITHUB_USERNAME}/lab03 projects/lab06
-+cd projects/lab06
- git remote remove origin
--git remote add origin https://github.com/${GITHUB_USERNAME}/lab04
-+git remote add origin https://github.com/${GITHUB_USERNAME}/lab06
- ```
- #Создание конфигурации Travis CLI
- ```sh
-(1/1) Индексировать этот блок [y,n,q,a,d,s,e,?]? y
-
-```
-```sh
-student@LabPythonVM:~/MaRLoR-64/workspace/projects/lab06$ git push origin master
-Username for 'https://github.com': MaRLoR-64
-Password for 'https://MaRLoR-64@github.com': 
-Перечисление объектов: 44, готово.
-Подсчет объектов: 100% (44/44), готово.
-При сжатии изменений используется до 4 потоков
-Сжатие объектов: 100% (30/30), готово.
-Запись объектов: 100% (44/44), 13.43 КиБ | 13.43 МиБ/с, готово.
-Всего 44 (изменений 13), повторно использовано 30 (изменений 8), повторно использовано пакетов 0
-remote: Resolving deltas: 100% (13/13), done.
-To https://github.com/MaRLoR-64/lab06
- * [new branch]      master -> master
-```
-```sh
-student@LabPythonVM:~/MaRLoR-64/workspace/projects/lab06$ sleep 20s && gnome-screenshot --file artifacts/screenshot.png
-
-```
-
-
-
-
-
