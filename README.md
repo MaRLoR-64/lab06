@@ -20,10 +20,10 @@ gem install travis
 ```
 #Клонирование и настройка репозитория 
 ```sh
-git clone https://github.com/${GITHUB_USERNAME}/lab03 projects/lab04
-cd projects/lab04
+git clone https://github.com/${GITHUB_USERNAME}/lab03 projects/lab05
+cd projects/lab05
 git remote remove origin
-git remote add origin https://github.com/${GITHUB_USERNAME}/lab04
+git remote add origin https://github.com/${GITHUB_USERNAME}/lab05
 ```
 #Создание конфигурации Travis CLI
 ```sh
