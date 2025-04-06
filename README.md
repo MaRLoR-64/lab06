@@ -7,27 +7,27 @@ student@LabPythonVM:~$ cd ${GITHUB_USERNAME}/workspace
 student@LabPythonVM:~/MaRLoR-64/workspace$ pushd .
 ~/MaRLoR-64/workspace ~/MaRLoR-64/workspace
 student@LabPythonVM:~/MaRLoR-64/workspace$ source scripts/activate
-student@LabPythonVM:~/MaRLoR-64/workspace$ git clone https://github.com/${GITHUB_USERNAME}/lab04 projects/lab05
-Клонирование в «projects/lab05»...
+student@LabPythonVM:~/MaRLoR-64/workspace$ git clone https://github.com/${GITHUB_USERNAME}/lab04 projects/lab06
+Клонирование в «projects/lab06»...
 remote: Enumerating objects: 33, done.
 remote: Counting objects: 100% (33/33), done.
 remote: Compressing objects: 100% (24/24), done.
 remote: Total 33 (delta 8), reused 26 (delta 5), pack-reused 0 (from 0)
 Получение объектов: 100% (33/33), 11.89 КиБ | 296.00 КиБ/с, готово.
 Определение изменений: 100% (8/8), готово.
-student@LabPythonVM:~/MaRLoR-64/workspace$ cd projects/lab05
-student@LabPythonVM:~/MaRLoR-64/workspace/projects/lab05$ git remote remove origin
-student@LabPythonVM:~/MaRLoR-64/workspace/projects/lab05$ git remote add origin https://github.com/${GITHUB_USERNAME}/lab05
-student@LabPythonVM:~/MaRLoR-64/workspace/projects/lab05$ mkdir third-party
-student@LabPythonVM:~/MaRLoR-64/workspace/projects/lab05$ git submodule add https://github.com/google/googletest third-party/gtest
-Клонирование в «/home/student/MaRLoR-64/workspace/projects/lab05/third-party/gtest»...
+student@LabPythonVM:~/MaRLoR-64/workspace$ cd projects/lab06
+student@LabPythonVM:~/MaRLoR-64/workspace/projects/lab06$ git remote remove origin
+student@LabPythonVM:~/MaRLoR-64/workspace/projects/lab06$ git remote add origin https://github.com/${GITHUB_USERNAME}/lab06
+student@LabPythonVM:~/MaRLoR-64/workspace/projects/lab06$ mkdir third-party
+student@LabPythonVM:~/MaRLoR-64/workspace/projects/lab06$ git submodule add https://github.com/google/googletest third-party/gtest
+Клонирование в «/home/student/MaRLoR-64/workspace/projects/lab06/third-party/gtest»...
 remote: Enumerating objects: 27977, done.
 remote: Counting objects: 100% (224/224), done.
 remote: Compressing objects: 100% (142/142), done.
 remote: Total 27977 (delta 143), reused 82 (delta 82), pack-reused 27753 (from 3)
 Получение объектов: 100% (27977/27977), 13.46 МиБ | 260.00 КиБ/с, готово.
 Определение изменений: 100% (20733/20733), готово.
-student@LabPythonVM:~/MaRLoR-64/workspace/projects/lab05$ cd third-party/gtest && git checkout release-1.8.1 && cd ../..
+student@LabPythonVM:~/MaRLoR-64/workspace/projects/lab06$ cd third-party/gtest && git checkout release-1.8.1 && cd ../..
 Примечание: переключение на «release-1.8.1».
 
 Вы сейчас в состоянии «отсоединённого указателя HEAD». Можете осмотреться,
@@ -48,8 +48,8 @@ git switch -c <новая-ветка>
 advice.detachedHead в значение false
 
 HEAD сейчас на 2fe3bd99 Merge pull request #1433 from dsacre/fix-clang-warnings
-student@LabPythonVM:~/MaRLoR-64/workspace/projects/lab05$ git add third-party/gtest
-student@LabPythonVM:~/MaRLoR-64/workspace/projects/lab05$ git commit -m"added gtest framework"
+student@LabPythonVM:~/MaRLoR-64/workspace/projects/lab06$ git add third-party/gtest
+student@LabPythonVM:~/MaRLoR-64/workspace/projects/lab06$ git commit -m"added gtest framework"
 [master 2981c0d] added gtest framework
  2 files changed, 4 insertions(+)
  create mode 100644 .gitmodules
@@ -57,9 +57,9 @@ student@LabPythonVM:~/MaRLoR-64/workspace/projects/lab05$ git commit -m"added gt
 ```
 #Добавление Google Test как submodule
 ```sh
-student@LabPythonVM:~/MaRLoR-64/workspace/projects/lab05$ gsed -i '/option(BUILD_EXAMPLES "Build examples" OFF)/a\
+student@LabPythonVM:~/MaRLoR-64/workspace/projects/lab06$ gsed -i '/option(BUILD_EXAMPLES "Build examples" OFF)/a\
 ' CMakeLists.txt
-student@LabPythonVM:~/MaRLoR-64/workspace/projects/lab05$ cat >> CMakeLists.txt <<EOF
+student@LabPythonVM:~/MaRLoR-64/workspace/projects/lab06$ cat >> CMakeLists.txt <<EOF
 > if(BUILD_TESTS)
   enable_testing()
   add_subdirectory(third-party/gtest)
@@ -69,8 +69,8 @@ student@LabPythonVM:~/MaRLoR-64/workspace/projects/lab05$ cat >> CMakeLists.txt 
   add_test(NAME check COMMAND check)
 endif()
 > EOF
-student@LabPythonVM:~/MaRLoR-64/workspace/projects/lab05$ mkdir tests
-student@LabPythonVM:~/MaRLoR-64/workspace/projects/lab05$ cat > tests/test1.cpp <<EOF
+student@LabPythonVM:~/MaRLoR-64/workspace/projects/lab06$ mkdir tests
+student@LabPythonVM:~/MaRLoR-64/workspace/projects/lab06$ cat > tests/test1.cpp <<EOF
 > #include <print.hpp>
 
 #include <gtest/gtest.h>
@@ -90,7 +90,7 @@ TEST(Print, InFileStream)
 
   EXPECT_EQ(result, text);
 > EOF
-student@LabPythonVM:~/MaRLoR-64/workspace/projects/lab05$ cmake -H. -B_build -DBUILD_TESTS=ON
+student@LabPythonVM:~/MaRLoR-64/workspace/projects/lab06$ cmake -H. -B_build -DBUILD_TESTS=ON
 -- The C compiler identification is GNU 12.2.0
 -- The CXX compiler identification is GNU 12.2.0
 -- Detecting C compiler ABI info
@@ -133,8 +133,8 @@ CMake Deprecation Warning at third-party/gtest/googletest/CMakeLists.txt:49 (cma
 -- Found Threads: TRUE  
 -- Configuring done
 -- Generating done
--- Build files have been written to: /home/student/MaRLoR-64/workspace/projects/lab05/_build
-student@LabPythonVM:~/MaRLoR-64/workspace/projects/lab05$ cmake --build _build
+-- Build files have been written to: /home/student/MaRLoR-64/workspace/projects/lab06/_build
+student@LabPythonVM:~/MaRLoR-64/workspace/projects/lab06$ cmake --build _build
 [ 16%] Built target print
 [ 33%] Built target gtest
 [ 50%] Built target gtest_main
@@ -151,17 +151,17 @@ student@LabPythonVM:~/MaRLoR-64/workspace/projects/lab05$ cmake --build _build
 ```
 #Запуск проекта
 ```sh
-student@LabPythonVM:~/MaRLoR-64/workspace/projects/lab05$ cmake --build _build --target test
+student@LabPythonVM:~/MaRLoR-64/workspace/projects/lab06$ cmake --build _build --target test
 Running tests...
-Test project /home/student/MaRLoR-64/workspace/projects/lab05/_build
+Test project /home/student/MaRLoR-64/workspace/projects/lab06/_build
     Start 1: check
 1/1 Test #1: check ............................   Passed    0.00 sec
 
 100% tests passed, 0 tests failed out of 1
 
 Total Test time (real) =   0.01 sec
-student@LabPythonVM:~/MaRLoR-64/workspace/projects/lab05$ _build/check
-Running main() from /home/student/MaRLoR-64/workspace/projects/lab05/third-party/gtest/googletest/src/gtest_main.cc
+student@LabPythonVM:~/MaRLoR-64/workspace/projects/lab06$ _build/check
+Running main() from /home/student/MaRLoR-64/workspace/projects/lab06/third-party/gtest/googletest/src/gtest_main.cc
 [==========] Running 1 test from 1 test case.
 [----------] Global test environment set-up.
 [----------] 1 test from Print
@@ -172,11 +172,11 @@ Running main() from /home/student/MaRLoR-64/workspace/projects/lab05/third-party
 [----------] Global test environment tear-down
 [==========] 1 test from 1 test case ran. (0 ms total)
 [  PASSED  ] 1 test.
-student@LabPythonVM:~/MaRLoR-64/workspace/projects/lab05$ cmake --build _build --target test -- ARGS=--verbose
+student@LabPythonVM:~/MaRLoR-64/workspace/projects/lab06$ cmake --build _build --target test -- ARGS=--verbose
 Running tests...
-UpdateCTestConfiguration  from :/home/student/MaRLoR-64/workspace/projects/lab05/_build/DartConfiguration.tcl
-UpdateCTestConfiguration  from :/home/student/MaRLoR-64/workspace/projects/lab05/_build/DartConfiguration.tcl
-Test project /home/student/MaRLoR-64/workspace/projects/lab05/_build
+UpdateCTestConfiguration  from :/home/student/MaRLoR-64/workspace/projects/lab06/_build/DartConfiguration.tcl
+UpdateCTestConfiguration  from :/home/student/MaRLoR-64/workspace/projects/lab06/_build/DartConfiguration.tcl
+Test project /home/student/MaRLoR-64/workspace/projects/lab06/_build
 Constructing a list of tests
 Done constructing a list of tests
 Updating test list for fixtures
@@ -186,11 +186,11 @@ Checking test dependency graph end
 test 1
     Start 1: check
 
-1: Test command: /home/student/MaRLoR-64/workspace/projects/lab05/_build/check
-1: Working Directory: /home/student/MaRLoR-64/workspace/projects/lab05/_build
+1: Test command: /home/student/MaRLoR-64/workspace/projects/lab06/_build/check
+1: Working Directory: /home/student/MaRLoR-64/workspace/projects/lab06/_build
 1: Test timeout computed to be: 10000000
 
-1: Running main() from /home/student/MaRLoR-64/workspace/projects/lab05/third-party/gtest/googletest/src/gtest_main.cc
+1: Running main() from /home/student/MaRLoR-64/workspace/projects/lab06/third-party/gtest/googletest/src/gtest_main.cc
 1: [==========] Running 1 test from 1 test case.
 1: [----------] Global test environment set-up.
 1: [----------] 1 test from Print
@@ -206,13 +206,13 @@ test 1
 100% tests passed, 0 tests failed out of 1
 
 Total Test time (real) =   0.00 sec
-student@LabPythonVM:~/MaRLoR-64/workspace/projects/lab05$ gsed -i 's/lab04/lab05/g' README.md
-student@LabPythonVM:~/MaRLoR-64/workspace/projects/lab05$ gsed -i 's/\(DCMAKE_INSTALL_PREFIX=_install\)/\1 -DBUILD_TESTS=ON/' .travis.yml
-student@LabPythonVM:~/MaRLoR-64/workspace/projects/lab05$ gsed -i '/cmake --build _build --target install/a\
+student@LabPythonVM:~/MaRLoR-64/workspace/projects/lab06$ gsed -i 's/lab04/lab06/g' README.md
+student@LabPythonVM:~/MaRLoR-64/workspace/projects/lab06$ gsed -i 's/\(DCMAKE_INSTALL_PREFIX=_install\)/\1 -DBUILD_TESTS=ON/' .travis.yml
+student@LabPythonVM:~/MaRLoR-64/workspace/projects/lab06$ gsed -i '/cmake --build _build --target install/a\
 - cmake --build _build --target test -- ARGS=--verbose
 ' .travis.yml
-student@LabPythonVM:~/MaRLoR-64/workspace/projects/lab05$ git add tests
-student@LabPythonVM:~/MaRLoR-64/workspace/projects/lab05$ git add -p
+student@LabPythonVM:~/MaRLoR-64/workspace/projects/lab06$ git add tests
+student@LabPythonVM:~/MaRLoR-64/workspace/projects/lab06$ git add -p
 diff --git a/.travis.yml b/.travis.yml
 index 876ee12..f89849d 100644
 --- a/.travis.yml
@@ -266,11 +266,11 @@ index d5a3349..cb775a0 100644
  ```sh
 -git clone https://github.com/${GITHUB_USERNAME}/lab03 projects/lab04
 -cd projects/lab04
-+git clone https://github.com/${GITHUB_USERNAME}/lab03 projects/lab05
-+cd projects/lab05
++git clone https://github.com/${GITHUB_USERNAME}/lab03 projects/lab06
++cd projects/lab06
  git remote remove origin
 -git remote add origin https://github.com/${GITHUB_USERNAME}/lab04
-+git remote add origin https://github.com/${GITHUB_USERNAME}/lab05
++git remote add origin https://github.com/${GITHUB_USERNAME}/lab06
  ```
  #Создание конфигурации Travis CLI
  ```sh
@@ -278,7 +278,7 @@ index d5a3349..cb775a0 100644
 
 ```
 ```sh
-student@LabPythonVM:~/MaRLoR-64/workspace/projects/lab05$ git push origin master
+student@LabPythonVM:~/MaRLoR-64/workspace/projects/lab06$ git push origin master
 Username for 'https://github.com': MaRLoR-64
 Password for 'https://MaRLoR-64@github.com': 
 Перечисление объектов: 44, готово.
@@ -288,11 +288,11 @@ Password for 'https://MaRLoR-64@github.com':
 Запись объектов: 100% (44/44), 13.43 КиБ | 13.43 МиБ/с, готово.
 Всего 44 (изменений 13), повторно использовано 30 (изменений 8), повторно использовано пакетов 0
 remote: Resolving deltas: 100% (13/13), done.
-To https://github.com/MaRLoR-64/lab05
+To https://github.com/MaRLoR-64/lab06
  * [new branch]      master -> master
 ```
 ```sh
-student@LabPythonVM:~/MaRLoR-64/workspace/projects/lab05$ sleep 20s && gnome-screenshot --file artifacts/screenshot.png
+student@LabPythonVM:~/MaRLoR-64/workspace/projects/lab06$ sleep 20s && gnome-screenshot --file artifacts/screenshot.png
 
 ```
 
